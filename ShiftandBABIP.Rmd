@@ -1,0 +1,71 @@
+---
+title: "Untitled"
+author: "Riley Feltner"
+date: "9/5/2022"
+output: html_document
+---
+
+```{r}
+data <- read.csv("ShiftandBattedBall.csv")
+data1 <- data[-c(1),]
+```
+
+```{r}
+library("ggplot2")
+library("tibble")
+ShiftandBABIP1 <- ggplot(data = data1, mapping = aes(x = Shift_percentage, y = BABIP))
+ShiftandBABIP2 <- ShiftandBABIP1 + geom_col(width = 1.3, alpha = .5, color = "dodgerblue3")+
+  theme_classic()+
+  geom_text(aes(label = Year), vjust = -0.5, size = 3.0, color = "red2")+
+  labs(x = "Shift Percentage",
+       y = "BABIP",
+       title = "MLB Shift Percentage and BABIP by Season",
+       caption = "Data: Baseball Savant | Riley Feltner")+
+  coord_cartesian(ylim = c(0.275,0.300))
+ShiftandBABIP2
+```
+
+
+```{r}
+install.packages("png")
+library("png")
+
+myimage <- readPNG("/Users/rileyfeltner/Desktop/MLB.png", native = TRUE)
+
+install.packages("patchwork")
+library("patchwork")
+
+ShiftandBABIP_image <- ShiftandBABIP2 +
+  inset_element(p = myimage,
+                 left = .75,
+                 bottom = .94,
+                 right = 1.06,
+                 top = 1.06)+
+  theme_void()
+ShiftandBABIP_image 
+```
+  
+  
+```{r}
+HardHitPerct <- ggplot(data = data1, mapping = aes(x = Year, y = Hard_hit_percentage))
+HardHitPerct1 <- HardHitPerct + geom_col(color = "dodgerblue3", alpha = .5)+
+  theme_classic()+
+  geom_text(aes(label = Hard_hit_percentage), vjust = -0.5, size = 3.0, color = "red2")+
+  labs(x = "Season",
+       y = "Hard Hit Percentage",
+       title = "MLB Hard Hit Percentage by Season",
+       caption = "Data: Baseball Savant | Riley Feltner")+
+  coord_cartesian(ylim = c(20,40))
+HardHitPerct1
+
+Hardhit_image <- HardHitPerct1 +
+  inset_element(p = myimage,
+                 left = .75,
+                 bottom = .94,
+                 right = 1.06,
+                 top = 1.06)+
+  theme_void()
+Hardhit_image
+```
+  
+  
